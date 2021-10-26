@@ -4,6 +4,7 @@
       <div class="tree-wrapper">
         <node-list
           :list="tree"
+          :nesting=0
         />
     </div>
   </div>
