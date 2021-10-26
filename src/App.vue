@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1 class="title">Дерево файлов</h1>
+      <div class="tree-wrapper">
+        <node-list
+          :list="tree"
+        />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NodeList from "./components/NodeList.vue";
+import tree from "../public/static/node_modules.json";
 
 export default {
   name: 'App',
+  data: () => ({
+    tree
+  }),
   components: {
-    HelloWorld
+    NodeList
   }
 }
 </script>
@@ -24,5 +32,15 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+</style>
+
+<style scoped>
+.title {
+  text-align: left;
+}
+
+.tree-wrapper {
+  text-align: left;
 }
 </style>
