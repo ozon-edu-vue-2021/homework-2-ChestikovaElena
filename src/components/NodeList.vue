@@ -19,7 +19,7 @@
       <li
         v-for="(node, i) in list.contents"
         :key="`${node.type}-${i}`"
-        @click="selectHandler(node, list.name)"
+        @click="selectHandler(node, list.name, nesting, $event.target)"
       >
         <node-list
           v-if="node.type === 'directory'"
@@ -81,16 +81,24 @@ export default {
       } else {
         console.warn("Превышен допустимый уровень вложенности")
       }
-      if (!this.isOpened && this.selectedItem.parentName === parentName) {
-        this.$emit('selected', {})
+
+      if ((!this.isOpened && this.selectedItem.parentName === parentName) || 
+        (!this.isOpened && (this.selectedItem.parentNesting > this.nesting))) {
+          this.$emit('selected', {})
       }
     },
-    selectHandler(node, parentName) {
+    selectHandler(node, parentName, nesting, eventTarget) {
       if (node.type !== 'directory') {
         if (this.selectedItem && this.selectedItem.node !== node) {
-          this.$emit('selected', { node, parentName });
+          this.$emit('selected', { node, parentName, nesting, eventTarget });
         } else {
           this.$emit('selected', {})
+        }
+      } else {
+        if (node) {
+          this.$emit('selected', { node, parentName, nesting, eventTarget })
+        } else {
+          this.$emit('selected', { node: {}, parentName: '', nesting: 0, eventTarget })
         }
       }
     }

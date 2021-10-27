@@ -1,13 +1,16 @@
 <template>
   <div id="app">
     <h1 class="title">Дерево файлов</h1>
-      <div class="tree-wrapper">
-        <node-list
-          :list="tree"
-          :selectedItem="selectedItem"
-          :nesting=0
-          @selected="updateSelectedItem"
-        />
+    <p class="path">
+      {{ `Полный путь к выделенному файлу/папке: ${path}` }}
+    </p>
+    <div class="tree-wrapper">
+      <node-list
+        :list="tree"
+        :selectedItem="selectedItem"
+        :nesting=0
+        @selected="updateSelectedItem"
+      />
     </div>
   </div>
 </template>
@@ -20,17 +23,39 @@ export default {
   name: 'App',
   data: () => ({
     tree,
-    selectedItem: {}
+    selectedItem: {},
+    eventTarget: null
   }),
+  computed: {
+    path() {
+      let fullPath = 'node_moduls';
+      if (this.eventTarget) {
+        fullPath = `${this.eventTarget.textContent}`;
+        let element = this.eventTarget;
+        while (element && element.closest('ul')) {
+          const parentElement = element.closest('ul').previousElementSibling;
+          fullPath = `${parentElement.lastChild.textContent}/${fullPath}`;
+          element = parentElement;
+        }
+        
+      }
+      return fullPath;
+    }
+  },
   components: {
     NodeList
   },
   methods: {
     updateSelectedItem(payload) {
-      this.selectedItem = {
-        node: payload.node,
-        parentName: payload.parentName
-      };
+      if ((Object.keys(payload).length == 0) || (payload && payload.node && payload.node.type !== 'directory')) {
+        this.selectedItem = {
+          node: payload.node,
+          parentName: payload.parentName,
+          parentNesting: payload.nesting,
+        };
+      }
+      
+      this.eventTarget = payload.eventTarget;
     }
   }
 }
@@ -49,6 +74,10 @@ export default {
 
 <style scoped>
 .title {
+  text-align: left;
+}
+
+.path {
   text-align: left;
 }
 
