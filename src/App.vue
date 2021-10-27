@@ -4,7 +4,9 @@
       <div class="tree-wrapper">
         <node-list
           :list="tree"
+          :selectedItem="selectedItem"
           :nesting=0
+          @selected="updateSelectedItem"
         />
     </div>
   </div>
@@ -17,10 +19,19 @@ import tree from "../public/static/node_modules.json";
 export default {
   name: 'App',
   data: () => ({
-    tree
+    tree,
+    selectedItem: null
   }),
   components: {
     NodeList
+  },
+  methods: {
+    updateSelectedItem(payload) {
+      this.selectedItem = {
+        node: payload.node,
+        parentName: payload.parentName
+      };
+    }
   }
 }
 </script>

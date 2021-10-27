@@ -1,7 +1,7 @@
 <template>
   <div class="node-list-wrapper">
     <div
-      @click="toggle"
+      @click="toggle(list.name)"
       :class="['node-list-title', {
         'node-list-title_disabled': isDisabled
       }]"
@@ -19,15 +19,19 @@
       <li
         v-for="(node, i) in list.contents"
         :key="`${node.type}-${i}`"
+        @click="selectHandler(node, list.name)"
       >
         <node-list
           v-if="node.type === 'directory'"
           :list="node"
           :nesting="nesting + 1"
+          @selected="(payload) => $emit('selected', payload)"
+          :selectedItem = "selectedItem"
         />
         <node-item
           v-else
           :node="node"
+          :selectedItem = "selectedItem"
         />
       </li>
     </ul>
@@ -44,6 +48,10 @@ export default {
   name: 'NodeList',
   props: {
     list: {
+      type: Object,
+      default: () => ({})
+    },
+    selectedItem: {
       type: Object,
       default: () => ({})
     },
@@ -66,11 +74,19 @@ export default {
     IconFolderOpen
   },
   methods: {
-    toggle() {
+    toggle(parentName) {
       if (this.nesting <= MAX_NESTING) {
         this.isOpened = !this.isOpened;
       } else {
-        console.error("Превышен допустимый уровень вложенности")
+        console.warn("Превышен допустимый уровень вложенности")
+      }
+      if (!this.isOpened && this.selectedItem.parentName === parentName) {
+        this.$emit('selected', {}, '')
+      }
+    },
+    selectHandler(node, parentName) {
+      if (node.type !== 'directory') {
+        this.$emit('selected', { node, parentName });
       }
     }
   }

@@ -1,9 +1,8 @@
 <template>
   <div
     :class="['node-wrapper', {
-        'node-wrapper_selected': isSelected
+        'node-wrapper_selected': selectedItem && selectedItem.node === node
       }]"
-    @click="selectHandler"
   >
     <icon-file v-if="node.type === 'file'" />
     <icon-link v-if="node.type === 'link'" />
@@ -21,19 +20,15 @@ export default {
     node: {
       type: Object,
       default: () => ({})
+    },
+    selectedItem: {
+      type: Object,
+      default: () => ({})
     }
   },
-  data: () => ({
-    isSelected: false,
-  }),
   components: {
     IconFile,
     IconLink
-  },
-  methods: {
-    selectHandler() {
-      this.isSelected = !this.isSelected;
-    }
   }
 }
 </script>
