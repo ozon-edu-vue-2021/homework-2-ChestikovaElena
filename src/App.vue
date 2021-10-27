@@ -2,7 +2,7 @@
   <div id="app">
     <h1 class="title">Дерево файлов</h1>
     <p class="path">
-      {{ `Полный путь к выделенному файлу/папке: ${path}` }}
+      {{ `Полный путь к выделенному файлу/ссылке: ${path}` }}
     </p>
     <div class="tree-wrapper">
       <node-list
@@ -28,7 +28,7 @@ export default {
   }),
   computed: {
     path() {
-      let fullPath = 'node_moduls';
+      let fullPath = '';
       if (this.eventTarget) {
         fullPath = `${this.eventTarget.textContent}`;
         let element = this.eventTarget;

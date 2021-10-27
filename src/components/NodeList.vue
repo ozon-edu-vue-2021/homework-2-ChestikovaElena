@@ -94,12 +94,6 @@ export default {
         } else {
           this.$emit('selected', {})
         }
-      } else {
-        if (node) {
-          this.$emit('selected', { node, parentName, nesting, eventTarget })
-        } else {
-          this.$emit('selected', { node: {}, parentName: '', nesting: 0, eventTarget })
-        }
       }
     }
   }
