@@ -46,4 +46,5 @@ export default {
 .icon {
   stroke: black;
 }
+
 </style>
