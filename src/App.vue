@@ -20,7 +20,7 @@ export default {
   name: 'App',
   data: () => ({
     tree,
-    selectedItem: null
+    selectedItem: {}
   }),
   components: {
     NodeList

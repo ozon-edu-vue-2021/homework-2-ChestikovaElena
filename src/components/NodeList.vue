@@ -6,14 +6,14 @@
         'node-list-title_disabled': isDisabled
       }]"
     >
-      <icon-folder-open v-if="!isOpened"/>
-      <icon-folder-close v-if="isOpened"/>
+      <icon v-if="!isOpened" iconType="folderOpen" />
+      <icon v-if="isOpened" iconType="folderClose" />
       <span class="node-list-name">
         {{ list.name }}
       </span>
     </div>
     <ul
-      v-if="isOpened && list.contents && list.contents.length"
+      v-if="isShowList"
       class="node-list"
     >
       <li
@@ -40,8 +40,7 @@
 
 <script>
 import NodeItem from './NodeItem.vue';
-import IconFolderClose from './Icons/IconFolderClose.vue';
-import IconFolderOpen from './Icons/IconFolderOpen.vue';
+import Icon from './Icons/Icon.vue';
 import { MAX_NESTING } from '../utils/constants.js';
 
 export default {
@@ -66,12 +65,14 @@ export default {
   computed: {
     isDisabled() {
       return this.nesting > MAX_NESTING
+    },
+    isShowList() {
+      return this.isOpened && this.list.contents && this.list.contents.length
     }
   },
   components: {
     NodeItem,
-    IconFolderClose,
-    IconFolderOpen
+    Icon
   },
   methods: {
     toggle(parentName) {
@@ -81,12 +82,16 @@ export default {
         console.warn("Превышен допустимый уровень вложенности")
       }
       if (!this.isOpened && this.selectedItem.parentName === parentName) {
-        this.$emit('selected', {}, '')
+        this.$emit('selected', {})
       }
     },
     selectHandler(node, parentName) {
       if (node.type !== 'directory') {
-        this.$emit('selected', { node, parentName });
+        if (this.selectedItem && this.selectedItem.node !== node) {
+          this.$emit('selected', { node, parentName });
+        } else {
+          this.$emit('selected', {})
+        }
       }
     }
   }

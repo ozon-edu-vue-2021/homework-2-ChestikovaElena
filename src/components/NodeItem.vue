@@ -4,15 +4,14 @@
         'node-wrapper_selected': selectedItem && selectedItem.node === node
       }]"
   >
-    <icon-file v-if="node.type === 'file'" />
-    <icon-link v-if="node.type === 'link'" />
+    <icon :iconType='node.type' />
+    
     <span class="node-label">{{ node.name }}</span>
   </div>
 </template>
 
 <script>
-import IconFile from './Icons/IconFile.vue';
-import IconLink from './Icons/IconLink.vue';
+import Icon from './Icons/Icon.vue';
 
 export default {
   name: 'NodeItem',
@@ -27,8 +26,7 @@ export default {
     }
   },
   components: {
-    IconFile,
-    IconLink
+    Icon
   }
 }
 </script>
