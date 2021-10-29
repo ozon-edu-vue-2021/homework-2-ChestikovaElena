@@ -6,6 +6,7 @@
     </p>
     <div class="tree-wrapper">
       <node-list
+        id="root"
         :list="tree"
         :selectedItem="selectedItem"
         :nesting=0
@@ -56,7 +57,13 @@ export default {
       }
       
       this.eventTarget = payload.eventTarget;
+    },
+    focusedOnRoot() {
+      document.getElementById('root').focus();
     }
+  },
+  mounted() {
+    this.focusedOnRoot();
   }
 }
 </script>
@@ -69,6 +76,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  margin-left: 10px;
 }
 </style>
 

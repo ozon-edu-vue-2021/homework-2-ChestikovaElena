@@ -3,6 +3,8 @@
     :class="['node-wrapper', {
         'node-wrapper_selected': selectedItem && selectedItem.node === node
       }]"
+    tabindex=-1
+    data-type="item"
   >
     <icon :iconType='node.type' />
     
@@ -38,13 +40,13 @@ export default {
   cursor: pointer;
 }
 
-.node-wrapper:hover,
-.node-wrapper_selected {
+.node-wrapper:hover > .node-label,
+.node-wrapper_selected > .node-label {
   color: blue;
 }
 
-.node-wrapper:hover svg,
-.node-wrapper_selected svg {
+.node-wrapper:hover > svg,
+.node-wrapper_selected > svg {
   stroke: blue;
 }
 
